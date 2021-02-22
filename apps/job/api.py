@@ -11,16 +11,24 @@ def api_search(request):
     query = data['query']
     company_size = data['company_size']
 
-    jobs = Job.objects.filter(status=Job.ACTIVE).filter(Q(title__icontains=query) | Q(short_description__icontains=query) | Q(long_description__icontains=query) | Q(company_name__icontains=query) | Q(company_place__icontains=query))
+    jobs = Job.objects\
+        .filter(status=Job.ACTIVE)\
+        .filter(
+            Q(title__icontains=query) | \
+            Q(short_description__icontains=query) | \
+            Q(long_description__icontains=query) | \
+            Q(created_by__userprofile__name__icontains=query) | \
+            Q(created_by__userprofile__address_city__icontains=query)
+        )
 
     if company_size:
-        jobs = jobs.filter(company_size=company_size)
+        jobs = jobs.filter(created_by_company_size=company_size)
     
     for job in jobs:
         obj = {
             'id': job.id,
             'title': job.title,
-            'company_name': job.company_name,
+            'company_name': job.created_by.userprofile.name,
             'url': '/jobs/%s/' % job.id
         }
         jobslist.append(obj)

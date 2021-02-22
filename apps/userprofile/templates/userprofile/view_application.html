@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="title">View application</h1>
 
-    <h2 class="subtitle">{{ application.job.title }}</h2>
+    <a href="{% url 'job_detail' application.job.id %}""><h2 class="subtitle">{{ application.job.title }}</h2></a>
 
     <small>Date added: {{ application.created_at }}</small>
 

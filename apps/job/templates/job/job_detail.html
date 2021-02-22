@@ -7,12 +7,13 @@
 
     <p>{{ job.long_description }}</p>
 
-    <b>Company name: </b>{{ job.company_name}}<br>
-    {% if job.company_address %}<b>Company address: </b>{{ job.company_address}}<br>{% endif %}
-    {% if job.company_zipcode %}<b>Company zipcode: </b>{{ job.company_zipcode}}<br>{% endif %}
-    {% if job.company_place %}<b>Company place: </b>{{ job.company_place}}<br>{% endif %}
-    {% if job.company_country %}<b>Company country: </b>{{ job.company_country}}<br>{% endif %}
-    <b>Company size: </b>{{ job.get_company_size_display }}<br>
+    <b>Company name: </b>{{ job.created_by.name}}<br>
+    {% if job.created_by.address_street %}<b>Company address: </b>{{ job.created_by.address_street}}<br>{% endif %}
+    {% if job.created_by.address_zipcode %}<b>Company zipcode: </b>{{ job.created_by.address_zipcode}}<br>{% endif %}
+    {% if job.created_by.address_city %}<b>Company city: </b>{{ job.created_by.address_city}}<br>{% endif %}
+    {% if job.created_by.address_country %}<b>Company country: </b>{{ job.created_by.address_country}}<br>{% endif %}
+    <b>Company size: </b>{{ job.created_by.get_company_size_display }}<br>
+    {% if job.created_by.company_description %}<p>{{ job.created_by.company_description}}</p><br>{% endif %}   
 
     <hr>
 

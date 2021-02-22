@@ -7,7 +7,7 @@ from django.db import models
 class AddJobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['title', 'short_description', 'long_description', 'company_name', 'company_address', 'company_zipcode', 'company_place', 'company_country', 'company_size']
+        fields = ['title', 'short_description', 'long_description']
 
 class ApplicationForm(forms.ModelForm):
     class Meta:

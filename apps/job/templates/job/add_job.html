@@ -35,63 +35,7 @@
                 <div class="control">
                     <textarea class="textarea" name="long_description" id="id_long_description"></textarea>
                 </div>
-            </div>
-
-            <div class="field">
-                <label>Company name</label>
-
-                <div class="control">
-                    <input class="input" type="text" name="company_name" id="id_company_name" v-model="company_name">
-                </div>
-            </div>
-
-            <div class="field">
-                <label>Company address</label>
-
-                <div class="control">
-                    <input class="input" type="text" name="company_address" id="id_company_address">
-                </div>
-            </div>
-
-            <div class="field">
-                <label>Company zipcode</label>
-
-                <div class="control">
-                    <input class="input" type="text" name="company_zipcode" id="id_company_zipcode">
-                </div>
-            </div>
-
-            <div class="field">
-                <label>Company place</label>
-
-                <div class="control">
-                    <input class="input" type="text" name="company_place" id="id_company_place">
-                </div>
-            </div>
-
-            <div class="field">
-                <label>Company country</label>
-
-                <div class="control">
-                    <input class="input" type="text" name="company_country" id="id_company_country">
-                </div>
-            </div>
-
-            <div class="field">
-                <label>Company size</label>
-
-                <div class="control">
-                    <div class="select">
-                        <select name="company_size" v-model="company_size">
-                            <option value="">Choose size</option>
-                            <option value="size_1-9">1-9</option>
-                            <option value="size_10-49">10-49</option>
-                            <option value="size_50-99">50-99</option>
-                            <option value="size_100">100+</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+            </div> 
 
             <div class="field">
                 <div class="control">
@@ -108,9 +52,7 @@
         data() {
             return {
                 title: '',
-                company_name: '',
                 short_description: '',
-                company_size: '',
                 errors: []
             }
         },
@@ -125,14 +67,6 @@
 
                 if (this.short_description === '') {
                     this.errors.push('The short description field is missing!')
-                }
-
-                if (this.company_name === '') {
-                    this.errors.push('The company name field is missing!')
-                }
-
-                if (this.company_size === '') {
-                    this.errors.push('The company size is missing!')
                 }
 
                 if (this.errors.length) {
