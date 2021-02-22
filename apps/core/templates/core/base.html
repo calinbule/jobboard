@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Title -->
-        <title>Coding Jobs</title>
+        <title>Jobboard</title>
 
         <!-- Styles -->
         {% load static %}
@@ -34,6 +34,7 @@
 
                     {% if request.user.is_authenticated %}
                         <a href="{% url 'dashboard' %}" class="navbar-item">Dashboard</a>
+                        <a href="{% url 'profile' %}" class="navbar-item">Profile</a>
 
                         {% if notifications.count > 0 %}
                             <a href="{% url 'notifications' %}" class="navbar-item has-text-danger">

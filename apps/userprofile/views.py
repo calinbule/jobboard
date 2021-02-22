@@ -11,6 +11,11 @@ def dashboard(request):
 
 
 @login_required
+def profile(request):
+    return render(request, 'userprofile/profile.html', {'userprofile': request.user.userprofile})
+
+
+@login_required
 def view_application(request, application_id):
     if request.user.userprofile.is_employer:
         application = get_object_or_404(Application, pk=application_id, job__created_by=request.user)
