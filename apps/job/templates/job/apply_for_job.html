@@ -1,26 +1,72 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-    <h1 class="title">Apply for job - {{ job.title }}</h1>
+    <div id="apply-job-app">
+        <h1 class="title">Apply for job - {{ job.title }}</h1>
+        <form v-on:submit="validateForm" method="post" action=".">
+            {% csrf_token %}
 
-    <form method="post" action=".">
-        {% csrf_token %}
+            <!-- Error notifications -->
+            {% if form.errors %}
+                {% for error in form.errors %}
+                    <div class="notification is-danger">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
 
-        {% if form.errors %}
-            {% for error in form.errors %}
-                <div class="notification is-danger">
-                    {{ error }}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        {{ form.media }}
-        {{ form.as_p }}
-
-        <div class="field">
-            <div class="control">
-                <button class="button is-success">Submit</button>
+            <div class="notification is-danger" v-if="errors.length">
+                <p v-for="error in errors">
+                    [[ error ]]
+                </p>
             </div>
-        </div>
-    </form>
+
+            request.user.userprofile.is_profile_completed: {{ request.user.userprofile.is_profile_completed }}
+
+            <!-- Form -->
+            {{ form.media }}
+            {{ form.as_p }}
+
+            <div class="field">
+                <div class="control">
+                    <button class="button is-success">Submit</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const ApplyJobApp = {
+        data() {
+            return {
+                is_profile_completed: '{{ request.user.userprofile.is_profile_completed }}',
+                errors: []
+            }
+        },
+        delimiters: ['[[', ']]'],
+        methods: {
+            validateForm(e) {
+                this.errors = []
+
+                if (this.is_profile_completed === false) {
+                    this.errors.push('Please know that you have to fill in your profile data in order to apply for a job!')
+                }
+
+                if (this.errors.length) {
+                    e.preventDefault()
+
+                    return false
+                } else {
+                    return true
+                }
+            }
+        }
+    }
+
+    Vue.createApp(ApplyJobApp).mount('#apply-job-app');
+</script>
+
 {% endblock %}

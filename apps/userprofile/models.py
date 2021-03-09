@@ -35,7 +35,7 @@ class Userprofile(models.Model):
     phone = models.CharField(max_length=50, blank=True, null=True)
     
     # Company specific fields
-    company_size = models.CharField(max_length=20, choices=CHOICES_SIZE, default=SIZE_1_9)
+    company_size = models.CharField(max_length=20, choices=CHOICES_SIZE, blank=True, null=True)
     company_description = RichTextField(blank=True, null=True)
     company_fiscal_code = models.CharField(max_length=50, blank=True, null=True)
 
@@ -46,11 +46,12 @@ class Userprofile(models.Model):
     person_available_for_relocation = models.BooleanField(default=False)
     person_available_for_parttime = models.BooleanField(default=False)
     person_available_for_businesstravel = models.BooleanField(default=False)
-    person_sex = models.CharField(max_length=1, choices=CHOICES_SEX, default=MALE)
+    person_sex = models.CharField(max_length=1, choices=CHOICES_SEX, blank=True, null=True)
 
     # Userprofile specific fields   
     user = models.OneToOneField(User, related_name='userprofile', on_delete=models.CASCADE)
     is_employer = models.BooleanField(default=False)
+    is_profile_completed = models.BooleanField(default=False)
 
 User.userprofile = property(lambda u:Userprofile.objects.get_or_create(user=u)[0])
 

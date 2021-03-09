@@ -3,6 +3,8 @@
 {% block content %}
     <h1 class="title">Profile</h1>
 
+    <a href="{% url 'edit_profile' %}" class="button is-success mb-4">Edit profile</a><br><br>
+
     {% if userprofile.is_employer %}
 
         {% if userprofile.name == False %}<p>Please fill in the company name to be able to create job postings.</p>{% endif %}
@@ -18,7 +20,7 @@
         {% if userprofile.email %}<b>Email: </b>{{ userprofile.email}}<br>{% endif %}
         {% if userprofile.phone %}<b>Contact phone: </b>{{ userprofile.phone}}<br>{% endif %}
         {% if userprofile.company_fiscal_code %}<b>Company unique identifier: </b>{{ userprofile.company_fiscal_code}}<br>{% endif %}
-        {% if userprofile.company_description %}<p>{{ userprofile.company_description}}</p><br>{% endif %}   
+        {% if userprofile.company_description %}<p>{{ userprofile.company_description|safe}}</p><br>{% endif %}   
 
     {% else %}
         {% if userprofile.name == False %}<p>Please fill in your name to be able to apply for jobs.</p>{% endif %}

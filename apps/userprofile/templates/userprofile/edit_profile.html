@@ -1,0 +1,309 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div id="edit-profile-app">
+        <h1 class="title">Edit profile</h1>
+        <form v-on:submit="validateForm" method="post" action=".">
+            {% csrf_token %}
+            
+            <!-- Error notifications -->
+            {% if form.errors %}
+                {% for error in form.errors %}
+                    <div class="notification is-danger django">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="notification is-danger" v-if="errors.length">
+                <p v-for="error in errors">
+                    [[ error ]]
+                </p>
+            </div>
+
+            <!-- Employer fields -->
+            {% if profile.is_employer is True %}
+
+                <div class="field">
+                    <label>Company name</label>
+
+                    <div class="control">
+                        <input 
+                            class="input" 
+                            type="text" 
+                            name="name" 
+                            id="id_name" 
+                            v-model="name" 
+                        >
+                    </div>
+                </div>
+            
+
+                <div class="field">
+                    <label>Company unique identifier</label>
+
+                    <div class="control">
+                        <input 
+                            class="input" 
+                            type="text" 
+                            name="company_fiscal_code" 
+                            id="id_company_fiscal_code"
+                            value="{% if profile.company_fiscal_code %}{{ profile.company_fiscal_code }}{% else %}{{ "" }}{% endif %}">
+                    </div>
+                </div>  
+                             
+
+                <div class="field">
+                    <label>Company size</label>
+
+                    <div class="control">
+                        <div class="select">
+                            <select name="company_size">
+                                <option value=""           {% if profile.company_size == '' %}          selected{% endif %}>Choose size</option>
+                                <option value="size_1-9"   {% if profile.company_size == 'size_1-9' %}  selected{% endif %}>1-9</option>
+                                <option value="size_10-49" {% if profile.company_size == 'size_10-49' %}selected{% endif %}>10-49</option>
+                                <option value="size_50-99" {% if profile.company_size == 'size_50-99' %}selected{% endif %}>50-99</option>
+                                <option value="size_100"   {% if profile.company_size == 'size_100' %}  selected{% endif %}>100+</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="field">
+                <label>Company description</label>
+
+                <div class="control">
+                    <textarea class="textarea" name="company_description" id="id_company_description">
+                        {% if profile.company_description %}
+                            {{ profile.company_description }}
+                        {% else %}
+                            {{ "" }}
+                        {% endif %}
+                    </textarea>
+                </div>
+            </div>
+
+            <!-- Jobseeker fields -->
+            {% else %}
+                <div class="field">
+                    <label>Name</label>
+
+                    <div class="control">
+                        <input class="input" type="text" name="name" id="id_name" v-model="name">
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <label>Last name</label>
+
+                    <div class="control">
+                        <input class="input" type="text" name="person_last_name" id="id_person_last_name" v-model="person_last_name">
+                    </div>
+                </div>
+                        
+                <div class="field">
+                    <label>Gender</label>
+
+                    <div class="control">
+                        <div class="select">
+                            <select name="person_sex" v-model="person_sex">
+                                <option 
+                                    value="M" 
+                                    {% if profile.get_person_sex_display == '' or profile.get_person_sex_display == 'M' %}
+                                        checked
+                                    {% endif %}>male</option>
+                                <option 
+                                    value="F" 
+                                    {% if profile.get_person_sex_display == 'F' %}
+                                        checked
+                                    {% endif %}>female</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <b>Other information</b><br><br>
+                <div class="field">
+                    <label>Driver's license</label>
+                    <input 
+                        type="checkbox" 
+                        name="person_drivers_license" 
+                        id="id_person_drivers_license" 
+                        {% if profile.person_drivers_license == True %}checked{% endif %}
+                    > 
+                </div>
+
+                <div class="field">
+                    <label>Interested in remote work offers</label>
+                    <input 
+                        type="checkbox" 
+                        name="person_available_for_remote" 
+                        id="id_person_available_for_remote"
+                        {% if profile.person_available_for_remote == True %}checked{% endif %}
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Interested in part time/project work offers</label>
+                    <input 
+                        type="checkbox" 
+                        name="person_available_for_parttime" 
+                        id="id_person_available_for_parttime"
+                        {% if profile.person_available_for_parttime == True %}checked{% endif %}
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Available for relocation</label>
+                    <input 
+                        type="checkbox" 
+                        name="person_available_for_relocation" 
+                        id="id_person_available_for_relocation"
+                        {% if profile.person_available_for_relocation == True %}checked{% endif %}
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Available for business travel</label>
+                    <input 
+                        type="checkbox" 
+                        name="person_available_for_businesstravel" 
+                        id="id_person_available_for_businesstravel"
+                        {% if profile.person_available_for_businesstravel == True %}checked{% endif %}
+                    >
+                </div>
+            {% endif %}
+            <hr>
+
+            <!-- Common fields -->
+            <b>Contact information</b><br><br>
+            <div class="field">
+                <label>Email</label>
+
+                <div class="control">
+                    <input class="input" type="email" name="email" id="id_email" v-model="email">
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Phone</label>
+
+                <div class="control">
+                    <input 
+                        class="input" 
+                        type="tel" 
+                        id="id_phone" 
+                        name="phone" 
+                        placeholder="+40-712.345.678" pattern="\+[0-9]{2}-[0-9]{3}.[0-9]{3}.[0-9]+"
+                        value="{% if profile.phone != None %}{{ profile.phone }}{% else %}{{ "" }}{% endif %}" 
+                    ><br>
+                    <small>Format: +40-712.345.678</small>
+                </div>
+            </div>
+            <hr>
+
+            <b>Address</b><br><br>
+            <div class="field">
+                <label>Street address</label>
+
+                <div class="control">
+                    <input class="input" type="text" name="address_street" id="id_address_street" value="{% if profile.address_street != None %}{{ profile.address_street }}{% else %}{{ "" }}{% endif %}">
+                </div>
+            </div>
+
+            {% if profile.address_street == None %}true{% else %}false{% endif %}
+            
+
+            <div class="field">
+                <label>Zipcode</label>
+
+                <div class="control">
+                    <input class="input" type="text" name="address_zipcode" id="id_address_zipcode" value="{% if profile.address_zipcode != None %}{{ profile.address_zipcode }}{% else %}{{ "" }}{% endif %}">
+                </div>
+            </div>
+            
+
+            <div class="field">
+                <label>City</label>
+
+                <div class="control">
+                    <input class="input" type="text" name="address_city" id="id_address_city" value="{% if profile.address_city != None %}{{ profile.address_city }}{% else %}{{ "" }}{% endif %}">
+                </div>
+            </div>
+            
+
+            <div class="field">
+                <label>Country</label>
+
+                <div class="control">
+                    <input class="input" type="text" name="address_country" id="id_address_country" value="{% if profile.address_country != None %}{{ profile.address_country }}{% else %}{{ "" }}{% endif %}">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <button class="button is-success" type="submit">Save changes</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const EditProfileApp = {
+        data() {
+            return {
+                name: '{% if profile.name %}{{ profile.name }}{% else %}{{ "" }}{% endif %}',
+                person_last_name: '{% if profile.person_last_name %}{{ profile.person_last_name }}{% else %}{{ "" }}{% endif %}',
+                person_sex: '{{ profile.person_sex }}',
+                email: '{% if profile.email %}{{ profile.email }}{% else %}{{ "" }}{% endif %}',
+                is_employer: '{{ profile.is_employer }}',
+                errors: []
+            }
+        },
+        delimiters: ['[[', ']]'],
+        methods: {
+            validateForm(e) {
+                this.errors = []
+
+                console.log(this.is_employer)
+
+                if (this.is_employer === true) {
+                    if (this.name === '') {
+                        this.errors.push('The company name field is mandatory!')
+                    }
+                } else {
+                    if (this.name === '') {
+                        this.errors.push('The first name field is mandatory!')
+                    }
+                    if (this.person_last_name === '') {
+                        this.errors.push('The last name field is mandatory!')
+                    }
+                    if (this.person_sex === '') {
+                        this.errors.push('The gender field is mandatory!')
+                    }
+                }
+
+                if (this.email === '') {
+                    this.errors.push('The email field is mandatory!')
+                }
+
+                if (this.errors.length) {
+                    e.preventDefault()
+
+                    return false
+                } else {
+                    return true
+                }
+            }
+        }
+    }
+
+    Vue.createApp(EditProfileApp).mount('#edit-profile-app');
+</script>
+
+{% endblock %}

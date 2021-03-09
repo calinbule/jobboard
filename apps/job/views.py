@@ -25,6 +25,7 @@ def job_detail(request, job_id):
 @login_required
 def apply_for_job(request, job_id):
     job = Job.objects.get(pk=job_id)
+    x = request.user.userprofile.is_profile_completed
 
     if request.user.userprofile.is_employer is False:
 
@@ -40,6 +41,7 @@ def apply_for_job(request, job_id):
                 create_notification(request, job.created_by, 'application', extra_id=application.id)
 
                 return redirect('dashboard')
+
         else:
             form = ApplicationForm()
     
@@ -75,19 +77,18 @@ def add_job(request):
 
 @login_required
 def edit_job(request, job_id):
-    job = get_object_or_404(Job, pk=job_id, created_by=request.user)
-
     if request.user.userprofile.is_employer is True:
-
+        job = get_object_or_404(Job, pk=job_id, created_by=request.user)
+        
         if request.method == 'POST':
-            form = AddJobForm(request.POST, instance=job)
+                form = AddJobForm(request.POST, instance=job)
 
-            if form.is_valid():
-                job = form.save(commit=False)
-                job.status = request.POST.get('status')
-                job.save()
+                if form.is_valid():
+                    job = form.save(commit=False)
+                    job.status = request.POST.get('status')
+                    job.save()
 
-                return redirect('dashboard')
+                    return redirect('dashboard')
         else:
             form = AddJobForm(instance=job)
         

@@ -19,14 +19,18 @@
 
     {% if not request.user.is_authenticated == True %}
         {% if job.status == 'active' %}
-            <a href="{% url 'apply_for_job' job.id %}" class="button is-success">Apply for job</a>
+                <a href="{% url 'apply_for_job' job.id %}" class="button is-success">Apply for job</a>
         {% else %}
             <p>This job is not available anymore!</p>
         {% endif %}
     {% else %}
         {% if userprofile.is_employer == False %}
             {% if job.status == 'active' %}
-                <a href="{% url 'apply_for_job' job.id %}" class="button is-success">Apply for job</a>
+                {% if request.user.userprofile.is_profile_completed == True %}
+                    <a href="{% url 'apply_for_job' job.id %}" class="button is-success">Apply for job</a>
+                {% else %}
+                    <p class="has-text-danger">Please know that you have to complete your profile in order to apply for a job.</p>
+                {% endif %}
             {% else %}
                 <p>This job is not available anymore!</p>
             {% endif %}        
