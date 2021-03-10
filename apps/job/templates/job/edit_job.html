@@ -7,6 +7,7 @@
         <form v-on:submit="validateForm" method="post" action=".">
             {% csrf_token %}
 
+            <!-- Error notifications -->
             {% if form.errors %}
                 {% for error in form.errors %}
                     <div class="notification is-danger">
@@ -15,7 +16,7 @@
                 {% endfor %}
             {% endif %}
 
-            <div class="notification is-danger" v-if="errors.length">
+            <div class="notification is-danger" v-if="errors.length" v-cloak>
                 <p v-for="error in errors">
                     [[ error ]]
                 </p>

@@ -15,13 +15,11 @@
                 {% endfor %}
             {% endif %}
 
-            <div class="notification is-danger" v-if="errors.length">
+            <div class="notification is-danger" v-if="errors.length" v-cloak>
                 <p v-for="error in errors">
                     [[ error ]]
                 </p>
             </div>
-
-            request.user.userprofile.is_profile_completed: {{ request.user.userprofile.is_profile_completed }}
 
             <!-- Form -->
             {{ form.media }}

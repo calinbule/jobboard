@@ -2,20 +2,21 @@
 
 {% block content %}
     <div id="edit-profile-app">
-        <h1 class="title">Edit profile</h1>
+        <h1 class="title" id="title">Edit profile</h1>
+
         <form v-on:submit="validateForm" method="post" action=".">
             {% csrf_token %}
             
             <!-- Error notifications -->
             {% if form.errors %}
                 {% for error in form.errors %}
-                    <div class="notification is-danger django">
+                    <div class="notification is-danger">
                         {{ error }}
                     </div>
                 {% endfor %}
             {% endif %}
 
-            <div class="notification is-danger" v-if="errors.length">
+            <div class="notification is-danger" v-if="errors.length" v-cloak>
                 <p v-for="error in errors">
                     [[ error ]]
                 </p>
@@ -196,10 +197,11 @@
                         type="tel" 
                         id="id_phone" 
                         name="phone" 
-                        placeholder="+40-712.345.678" pattern="\+[0-9]{2}-[0-9]{3}.[0-9]{3}.[0-9]+"
+                        placeholder="+40712345678"
+                        pattern="\+[0-9]+"
                         value="{% if profile.phone != None %}{{ profile.phone }}{% else %}{{ "" }}{% endif %}" 
                     ><br>
-                    <small>Format: +40-712.345.678</small>
+                    <small>Format: +40712345678</small>
                 </div>
             </div>
             <hr>
@@ -261,7 +263,7 @@
                 person_last_name: '{% if profile.person_last_name %}{{ profile.person_last_name }}{% else %}{{ "" }}{% endif %}',
                 person_sex: '{{ profile.person_sex }}',
                 email: '{% if profile.email %}{{ profile.email }}{% else %}{{ "" }}{% endif %}',
-                is_employer: '{{ profile.is_employer }}',
+                is_employer:  (function () {if('{{ profile.is_employer }}' === 'True'){return true}else{return false}})(),
                 errors: []
             }
         },
@@ -270,20 +272,20 @@
             validateForm(e) {
                 this.errors = []
 
-                console.log(this.is_employer)
-
-                if (this.is_employer === true) {
+                if (this.is_employer) {
                     if (this.name === '') {
                         this.errors.push('The company name field is mandatory!')
                     }
-                } else {
+                }
+
+                if (!this.is_employer) {
                     if (this.name === '') {
                         this.errors.push('The first name field is mandatory!')
                     }
                     if (this.person_last_name === '') {
                         this.errors.push('The last name field is mandatory!')
                     }
-                    if (this.person_sex === '') {
+                    if (this.person_sex === 'None') {
                         this.errors.push('The gender field is mandatory!')
                     }
                 }
@@ -294,6 +296,9 @@
 
                 if (this.errors.length) {
                     e.preventDefault()
+
+                    var elmnt = document.getElementById("title");
+                    elmnt.scrollIntoView();
 
                     return false
                 } else {

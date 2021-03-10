@@ -7,6 +7,15 @@
         <form v-on:submit="validateForm" method="post" action=".">
             {% csrf_token %}
 
+            <!-- Error notifications -->
+            {% if form.errors %}
+                {% for error in form.errors %}
+                    <div class="notification is-danger">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             <div class="notification is-danger" v-if="errors.length" v-cloak>
                 <p v-for="error in errors">
                     [[ error ]]
@@ -25,7 +34,7 @@
                 <label>Short description</label>
 
                 <div class="control">
-                    <textarea class="textarea" name="short_description" id="id_short_description" v-model="short_description"></textarea>
+                    <textarea class="textarea" name="short_description" id="id_short_description" v-model="short_description" ></textarea>
                 </div>
             </div>
 

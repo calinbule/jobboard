@@ -5,75 +5,88 @@
 
     <a href="{% url 'edit_profile' %}" class="button is-success mb-4">Edit profile</a><br><br>
 
-    {% if userprofile.is_employer %}
+    {% if userprofile.is_profile_completed %}
 
-        {% if userprofile.name == False %}<p>Please fill in the company name to be able to create job postings.</p>{% endif %}
-        {% if userprofile.company_fiscal_code == False %}<p>Please fill in the company unique identifier for invoicing.</p>{% endif %}
+        {% if userprofile.is_employer %}
 
-        {% if userprofile.name %}<b>Company name: </b>{{ userprofile.name}}<br>{% endif %}
-        <b>Address: </b>
-        {% if userprofile.address_street %}{{ userprofile.address_street}}, {% endif %}
-        {% if userprofile.address_zipcode %}{{ userprofile.address_zipcode}}, {% endif %}
-        {% if userprofile.address_city %}{{ userprofile.address_city}}, <br>{% endif %}
-        {% if userprofile.address_country %}{{ userprofile.address_country}}<br>{% endif %}
-        <b>Company size: </b>{{ userprofile.get_company_size_display }}<hr>
-        {% if userprofile.email %}<b>Email: </b>{{ userprofile.email}}<br>{% endif %}
-        {% if userprofile.phone %}<b>Contact phone: </b>{{ userprofile.phone}}<br>{% endif %}
-        {% if userprofile.company_fiscal_code %}<b>Company unique identifier: </b>{{ userprofile.company_fiscal_code}}<br>{% endif %}
-        {% if userprofile.company_description %}<p>{{ userprofile.company_description|safe}}</p><br>{% endif %}   
+            {% if userprofile.name %}<b>Company name: </b>{{ userprofile.name}}<br>{% endif %}
+            {% if userprofile.company_fiscal_code %}<b>Company unique identifier: </b>{{ userprofile.company_fiscal_code}}<br>{% endif %}
+            {% if userprofile.address_street or userprofile.address_zipcode or userprofile.address_city or userprofile.address_country %}
+                <b>Address: </b><br>
+            {% endif %}
+            {% if userprofile.address_street %}{{ userprofile.address_street}} <br>{% endif %}
+            {% if userprofile.address_zipcode %}{{ userprofile.address_zipcode}} {% endif %}
+            {% if userprofile.address_city %}{{ userprofile.address_city}} {% endif %}
+            {% if userprofile.address_country %}{{ userprofile.address_country}}<br>{% endif %}
 
+            {% if userprofile.get_company_size_display %}<b>Company size: </b>{{ userprofile.get_company_size_display }}{% endif %}
+            <hr>
+            {% if userprofile.email %}<b>Email: </b>{{ userprofile.email}}<br>{% endif %}
+            {% if userprofile.phone %}<b>Contact phone: </b>{{ userprofile.phone}}<br>{% endif %}<hr>
+            
+            {% if userprofile.company_description %}<p>{{ userprofile.company_description|safe}}</p><br>{% endif %}   
+
+        {% else %}
+            
+            {% if userprofile.name %}<b>Name: </b>{{ userprofile.name}}<br>{% endif %}
+            {% if userprofile.person_last_name %}<b>Last name: </b>{{ userprofile.person_last_name}}<br>{% endif %}
+            <b>Sex: </b>{{ userprofile.get_person_sex_display }}<br>
+            {% if userprofile.address_street or userprofile.address_zipcode or userprofile.address_city or userprofile.address_country %}
+                <b>Address: </b><br>
+            {% endif %}
+            {% if userprofile.address_street %}{{ userprofile.address_street}} <br>{% endif %}
+            {% if userprofile.address_zipcode %}{{ userprofile.address_zipcode}} {% endif %}
+            {% if userprofile.address_city %}{{ userprofile.address_city}} {% endif %}
+            {% if userprofile.address_country %}{{ userprofile.address_country}}<br>{% endif %}<hr>
+
+            {% if userprofile.email %}<b>Email: </b>{{ userprofile.email}}<br>{% endif %}
+            {% if userprofile.phone %}<b>Contact phone: </b>{{ userprofile.phone}}<br>{% endif %}<hr>
+
+            <b>Drivers license: </b>
+            {% if userprofile.person_drivers_license %}
+                <i class="far fa-check-square"></i>
+            {% else %}
+                <i class="far fa-square"></i>
+            {% endif %}
+            <br>
+
+            <b>Interested in remote work offers: </b>
+            {% if userprofile.person_available_for_remote == True %}
+                <i class="far fa-check-square"></i>
+            {% else %}
+                <i class="far fa-square"></i>
+            {% endif %}
+            <br>
+
+            <b>Interested in part time/project work offers: </b>
+            {% if userprofile.person_available_for_parttime == True %}
+                <i class="far fa-check-square"></i>
+            {% else %}
+                <i class="far fa-square"></i>
+            {% endif %}
+            <br>
+
+            <b>Available for relocation: </b>
+            {% if userprofile.person_available_for_relocation == True %}
+                <i class="far fa-check-square"></i>
+            {% else %}
+                <i class="far fa-square"></i>
+            {% endif %}
+            <br>
+
+            <b>Available for business travel: </b>
+            {% if userprofile.person_available_for_businesstravel == True %}
+                <i class="far fa-check-square"></i>
+            {% else %}
+                <i class="far fa-square"></i>
+            {% endif %}
+            <br>
+
+        {% endif %}
+    
     {% else %}
-        {% if userprofile.name == False %}<p>Please fill in your name to be able to apply for jobs.</p>{% endif %}
-        
 
-        {% if userprofile.name %}<b>Name: </b>{{ userprofile.name}}<br>{% endif %}
-        {% if userprofile.person_last_name %}<b>Name: </b>{{ userprofile.person_last_name}}<br>{% endif %}
-        <b>Sex: </b>{{ userprofile.get_person_sex_display }}<br>
-        <b>Address: </b>
-        {% if userprofile.address_street %}{{ userprofile.address_street}}, {% endif %}
-        {% if userprofile.address_zipcode %}{{ userprofile.address_zipcode}}, {% endif %}
-        {% if userprofile.address_city %}{{ userprofile.address_city}}, <br>{% endif %}
-        {% if userprofile.address_country %}{{ userprofile.address_country}}<br>{% endif %}<hr>
-
-        <b>Drivers license: </b>
-        {% if userprofile.person_drivers_license %}
-            <i class="far fa-check-square"></i>
-        {% else %}
-            <i class="far fa-square"></i>
-        {% endif %}
-        <br>
-
-        <b>Interested in remote work offers: </b>
-        {% if userprofile.person_available_for_remote == True %}
-            <i class="far fa-check-square"></i>
-        {% else %}
-            <i class="far fa-square"></i>
-        {% endif %}
-        <br>
-
-        <b>Interested in part time/project work offers: </b>
-        {% if userprofile.person_available_for_parttime == True %}
-            <i class="far fa-check-square"></i>
-        {% else %}
-            <i class="far fa-square"></i>
-        {% endif %}
-        <br>
-
-        <b>Available for relocation: </b>
-        {% if userprofile.person_available_for_relocation == True %}
-            <i class="far fa-check-square"></i>
-        {% else %}
-            <i class="far fa-square"></i>
-        {% endif %}
-        <br>
-
-        <b>Available for business travel: </b>
-        {% if userprofile.person_available_for_businesstravel == True %}
-            <i class="far fa-check-square"></i>
-        {% else %}
-            <i class="far fa-square"></i>
-        {% endif %}
-        <br>
+        <p class="has-text-danger">You have not completed your profile yet. Please click the button above and fill in your data. </p>
 
     {% endif %}
 {% endblock %}

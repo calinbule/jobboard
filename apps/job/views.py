@@ -29,24 +29,30 @@ def apply_for_job(request, job_id):
 
     if request.user.userprofile.is_employer is False:
 
-        if request.method == 'POST':
-            form = ApplicationForm(request.POST)
+        if request.user.userprofile.is_profile_completed is True:
 
-            if form.is_valid():
-                application = form.save(commit=False)
-                application.job = job
-                application.created_by = request.user
-                application.save()
+            if request.method == 'POST':
+                form = ApplicationForm(request.POST)
 
-                create_notification(request, job.created_by, 'application', extra_id=application.id)
+                if form.is_valid():
+                    application = form.save(commit=False)
+                    application.job = job
+                    application.created_by = request.user
+                    application.save()
 
-                return redirect('dashboard')
+                    create_notification(request, job.created_by, 'application', extra_id=application.id)
+
+                    return redirect('dashboard')
+
+            else:
+                form = ApplicationForm()
+        
+            return render(request, 'job/apply_for_job.html', {'form': form, 'job': job})
 
         else:
-            form = ApplicationForm()
-    
-        return render(request, 'job/apply_for_job.html', {'form': form, 'job': job})
-    
+            denied_message = "You can only apply to a job after you've completed your profile."
+            return render(request, 'job/operation_denied.html', {'denied_message': denied_message})           
+
     else:
         denied_message = "Employers can't apply for jobs."
         return render(request, 'job/operation_denied.html', {'denied_message': denied_message})
