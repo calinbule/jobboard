@@ -1,5 +1,4 @@
 from django import forms
-from ckeditor.fields import RichTextField
 from .models import Userprofile
 from django.db import models
 

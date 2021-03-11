@@ -22,8 +22,21 @@
             </div>
 
             <!-- Form -->
-            {{ form.media }}
-            {{ form.as_p }}
+            <div class="field">
+                <label>Cover letter</label>
+
+                <div class="control">
+                    <textarea class="textarea" name="cover_letter" id="id_cover_letter"></textarea>
+                </div>
+            </div>             
+            
+            <div class="field">
+                <label>Experience</label>
+
+                <div class="control">
+                    <textarea class="textarea" name="experience" id="id_experience" v-model="experience"></textarea>
+                </div>
+            </div> 
 
             <div class="field">
                 <div class="control">
@@ -40,7 +53,8 @@
     const ApplyJobApp = {
         data() {
             return {
-                is_profile_completed: '{{ request.user.userprofile.is_profile_completed }}',
+                short_description: '',
+                experience: '',
                 errors: []
             }
         },
@@ -48,9 +62,10 @@
         methods: {
             validateForm(e) {
                 this.errors = []
+                this.experience = tinymce.get('id_experience').getContent()
 
-                if (this.is_profile_completed === false) {
-                    this.errors.push('Please know that you have to fill in your profile data in order to apply for a job!')
+                if (this.experience === '') {
+                    this.errors.push('The experience field can\'t be empty')
                 }
 
                 if (this.errors.length) {
@@ -66,5 +81,9 @@
 
     Vue.createApp(ApplyJobApp).mount('#apply-job-app');
 </script>
+
+{% load static %}
+<script src="/static/tinymce/tinymce.min.js"></script>
+<script src="{% static 'core/main.js' %}"></script>
 
 {% endblock %}

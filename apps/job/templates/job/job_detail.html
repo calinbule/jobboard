@@ -5,7 +5,7 @@
 
     <p class="is-size-4">{{ job.short_description }}</p>
 
-    <p>{{ job.long_description }}</p>
+    <p>{{ job.long_description|safe }}</p>
 
     <b>Company name: </b>{{ job.created_by.name}}<br>
     {% if job.created_by.address_street %}<b>Company address: </b>{{ job.created_by.address_street}}<br>{% endif %}

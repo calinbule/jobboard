@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from ckeditor.fields import RichTextField
 from django.db import models
+from tinymce.models import HTMLField 
 
 class Job(models.Model):
 
@@ -16,8 +16,8 @@ class Job(models.Model):
     )
 
     title = models.CharField(max_length=255)
-    short_description = RichTextField(null=True, blank=True)
-    long_description = RichTextField(null=True, blank=True)
+    short_description = models.CharField(max_length=100, null=True, blank=True) 
+    long_description = models.TextField(null=True, blank=True)
 
     created_by = models.ForeignKey(User, related_name='jobs', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -29,8 +29,8 @@ class Job(models.Model):
 
 class Application(models.Model):
     job = models.ForeignKey(Job, related_name='applications', on_delete=models.CASCADE)
-    cover_letter = RichTextField(null=True, blank=True)
-    experience = RichTextField(null=True, blank=True)
+    cover_letter = models.TextField(null=True, blank=True)
+    experience = models.TextField(null=True, blank=True)
 
     created_by = models.ForeignKey(User, related_name='applications', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

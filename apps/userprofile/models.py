@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from ckeditor.fields import RichTextField
 
 from apps.job.models import Application
 
@@ -36,7 +35,7 @@ class Userprofile(models.Model):
     
     # Company specific fields
     company_size = models.CharField(max_length=20, choices=CHOICES_SIZE, blank=True, null=True)
-    company_description = RichTextField(blank=True, null=True)
+    company_description = models.TextField(blank=True, null=True)
     company_fiscal_code = models.CharField(max_length=50, blank=True, null=True)
 
     # Individual person specific fields

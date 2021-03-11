@@ -7,7 +7,7 @@
 
     <p class="is-size-4">{{ job.short_description }}</p>
 
-    <p>{{ job.long_description }}</p>
+    <p>{{ job.long_description|safe }}</p>
 
     {% for application in job.applications.all %}
         <a href="{% url 'view_application' application.id %}">{{ application.created_by.username }}</a>

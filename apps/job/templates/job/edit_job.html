@@ -34,7 +34,7 @@
                 <label>Short description</label>
 
                 <div class="control">
-                    <textarea class="textarea" name="short_description" id="id_short_description" v-model="short_description"></textarea>
+                    <input class="input" name="short_description" id="id_short_description" v-model="short_description"></input>
                 </div>
             </div>
 
@@ -105,4 +105,15 @@
 
     Vue.createApp(EditJobApp).mount('#edit-job-app');
 </script>
+
+<script src="/static/tinymce/tinymce.min.js"></script>
+<script>
+tinymce.init({selector:'textarea',
+    plugins: [
+        "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern"
+    ],
+});</script>
 {% endblock %}
