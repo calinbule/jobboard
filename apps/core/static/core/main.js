@@ -12,7 +12,7 @@ tinymce.init({
     autosave_restore_when_empty: false, /* set this to true ??? */
     autosave_retention: '2m',
     image_advtab: true,
-    height: 600,
+    height: 300,
     /*image_caption: true,*/
     quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
     noneditable_noneditable_class: 'mceNonEditable', /* do we really need this ??? */
