@@ -48,8 +48,8 @@ def view_dashboard_job(request, job_id):
         return render(request, 'userprofile/view_dashboard_job.html', {'job': job})
 
     else:
-        denied_message = "This area is reserved to jobseekers only."
-        return render(request, 'job/operation_denied.html', {'denied_message': denied_message})
+        denied_message = "This area is reserved to employers only."
+        return render(request, 'core/operation_denied.html', {'denied_message': denied_message})
 
 
 @login_required

@@ -51,11 +51,11 @@ def apply_for_job(request, job_id):
 
         else:
             denied_message = "You can only apply to a job after you've completed your profile."
-            return render(request, 'job/operation_denied.html', {'denied_message': denied_message})           
+            return render(request, 'core/operation_denied.html', {'denied_message': denied_message})           
 
     else:
         denied_message = "Employers can't apply for jobs."
-        return render(request, 'job/operation_denied.html', {'denied_message': denied_message})
+        return render(request, 'core/operation_denied.html', {'denied_message': denied_message})
 
 
 @login_required
@@ -78,7 +78,7 @@ def add_job(request):
     
     else:
         denied_message = "Job seekers can't add jobs."
-        return render(request, 'job/operation_denied.html', {'denied_message': denied_message})
+        return render(request, 'core/operation_denied.html', {'denied_message': denied_message})
 
 
 @login_required
@@ -102,4 +102,4 @@ def edit_job(request, job_id):
 
     else:
         denied_message = "Job seekers can't edit jobs."
-        return render(request, 'job/operation_denied.html', {'denied_message': denied_message})
+        return render(request, 'core/operation_denied.html', {'denied_message': denied_message})
